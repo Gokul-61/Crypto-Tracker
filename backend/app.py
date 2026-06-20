@@ -459,22 +459,41 @@ def get_cryptos():
         }), 500
 @app.route('/api/cryptos/<coin_id>/trends', methods=['GET'])
 def get_coin_trends(coin_id):
-    days = request.args.get('days', '7')
+    days = int(request.args.get('days', 7))
+
     try:
+        symbol = coin_id.upper() + "/USD"
+
         response = requests.get(
-    f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart",
-    params={
-        "vs_currency": "usd",
-        "days": days
-    },
-    headers={
-        "User-Agent": "Mozilla/5.0"
-    }
-)
+            "https://api.twelvedata.com/time_series",
+            params={
+                "symbol": symbol,
+                "interval": "1day",
+                "outputsize": days,
+                "apikey": os.getenv("TWELVEDATA_API_KEY")
+            }
+        )
+
         response.raise_for_status()
-        return jsonify({"prices": response.json()['prices']}) # Only return prices array
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": "Failed to fetch trends", "details": str(e)}), 500
+
+        data = response.json()
+
+        prices = []
+
+        for item in reversed(data["values"]):
+            dt = datetime.strptime(item["datetime"], "%Y-%m-%d")
+            timestamp = int(dt.timestamp() * 1000)
+            price = float(item["close"])
+
+            prices.append([timestamp, price])
+
+        return jsonify({"prices": prices})
+
+    except Exception as e:
+        return jsonify({
+            "error": "Failed to fetch trends",
+            "details": str(e)
+        }), 500
 
 @app.route('/api/cryptos/news', methods=['GET'])
 def get_crypto_news():
