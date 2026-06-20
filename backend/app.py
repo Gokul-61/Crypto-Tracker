@@ -419,23 +419,30 @@ def logout():
 def get_cryptos():
     try:
         response = requests.get(
-            "https://api.coingecko.com/api/v3/coins/markets",
-            params={
-                "vs_currency": "usd",
-                "order": "market_cap_desc",
-                "per_page": 50,
-                "page": 1,
-                "sparkline": False
-            },
-            headers={
-                "User-Agent": "Mozilla/5.0"
-            }
+            "https://api.coincap.io/v2/assets",
+            params={"limit": 50}
         )
 
         response.raise_for_status()
-        return jsonify(response.json())
 
-    except requests.exceptions.RequestException as e:
+        data = response.json()["data"]
+
+        cryptos = []
+
+        for coin in data:
+            cryptos.append({
+                "id": coin["id"],
+                "name": coin["name"],
+                "symbol": coin["symbol"],
+                "current_price": float(coin["priceUsd"]),
+                "price_change_percentage_24h": float(coin["changePercent24Hr"]),
+                "market_cap": float(coin["marketCapUsd"]),
+                "image": f"https://assets.coincap.io/assets/icons/{coin['symbol'].lower()}@2x.png"
+            })
+
+        return jsonify(cryptos)
+
+    except Exception as e:
         return jsonify({
             "error": "Failed to fetch cryptocurrency data",
             "details": str(e)
