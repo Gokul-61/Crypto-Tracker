@@ -419,28 +419,42 @@ def logout():
 def get_cryptos():
     try:
         response = requests.get(
-            f"https://api.coingecko.com/api/v3/coins/markets",
+            "https://api.coingecko.com/api/v3/coins/markets",
             params={
                 "vs_currency": "usd",
                 "order": "market_cap_desc",
-                "per_page": 250,
+                "per_page": 50,
                 "page": 1,
                 "sparkline": False
+            },
+            headers={
+                "User-Agent": "Mozilla/5.0"
             }
         )
+
         response.raise_for_status()
         return jsonify(response.json())
+
     except requests.exceptions.RequestException as e:
-        return jsonify({"error": "Failed to fetch cryptocurrency data", "details": str(e)}), 500
+        return jsonify({
+            "error": "Failed to fetch cryptocurrency data",
+            "details": str(e)
+        }), 500
 
 @app.route('/api/cryptos/<coin_id>/trends', methods=['GET'])
 def get_coin_trends(coin_id):
     days = request.args.get('days', '7')
     try:
         response = requests.get(
-            f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart",
-            params={"vs_currency": "usd", "days": days}
-        )
+    f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart",
+    params={
+        "vs_currency": "usd",
+        "days": days
+    },
+    headers={
+        "User-Agent": "Mozilla/5.0"
+    }
+)
         response.raise_for_status()
         return jsonify({"prices": response.json()['prices']}) # Only return prices array
     except requests.exceptions.RequestException as e:
