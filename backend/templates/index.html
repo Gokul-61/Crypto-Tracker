@@ -509,7 +509,7 @@
         
         // Left-click to go to trends page
         row.addEventListener('click', () => {
-          window.location.href = `{{ url_for('trends_page') }}?coinId=${coin.id}&coinName=${encodeURIComponent(coin.name)}`;
+          window.location.href = `{{ url_for('trends_page') }}?coinId=${coin.symbol}&coinName=${encodeURIComponent(coin.name)}`;
         });
         
         tableBody.appendChild(row);
