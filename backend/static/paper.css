@@ -183,4 +183,34 @@
     color: #777;
     font-size: 0.9rem;
   }
+
+  @media screen and (max-width:768px){
+
+.container{
+width:95%;
+padding:10px;
+}
+
+table{
+display:block;
+overflow-x:auto;
+}
+
+.nav-links span{
+display:none;
+}
+
+.nav-links{
+gap:8px;
+}
+
+button{
+width:100%;
+}
+
+h1{
+font-size:1.5rem;
+}
+
+}
   
