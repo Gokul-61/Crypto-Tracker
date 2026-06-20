@@ -184,7 +184,7 @@
 
             // ... (inside the submit event listener for otpForm)
 try {
-    const response = await fetch('http://127.0.0.1:5000/api/verify_otp', { // <--- CHANGE THIS LINE
+    const response = await fetch('/api/verify_otp', { // <--- CHANGE THIS LINE
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -198,7 +198,7 @@ try {
 
 // ... (inside the click event listener for resendOtpLink)
 try {
-    const response = await fetch('http://127.0.0.1:5000/api/resend_otp', { // <--- CHANGE THIS LINE
+    const response = await fetch('/api/resend_otp', { // <--- CHANGE THIS LINE
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ try {
             }
 
             try {
-    const response = await fetch('http://127.0.0.1:5000/api/resend_otp', { // <--- CHANGE THIS LINE
+    const response = await fetch('/api/resend_otp', { // <--- CHANGE THIS LINE
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

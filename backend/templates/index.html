@@ -446,7 +446,7 @@
 
     const fetchCryptoData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/cryptos');
+        const response = await fetch('/api/cryptos');
         allCryptoData = await response.json();
         renderTable(allCryptoData);
       } catch (error) {
@@ -601,7 +601,7 @@
 
         // Send alert data to backend
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/alerts/subscribe', {
+            const response = await fetch('/api/alerts/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

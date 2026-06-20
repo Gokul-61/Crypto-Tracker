@@ -179,7 +179,7 @@
 
             try {
                 console.log("Attempting to fetch /api/register..."); 
-                const response = await fetch('http://127.0.0.1:5000/api/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -198,7 +198,7 @@
                     console.log("Registration successful! Redirecting in 2 seconds..."); 
                     
                     setTimeout(() => {
-                        window.location.href = `http://127.0.0.1:5000/verify_otp?email=${encodeURIComponent(email)}`;
+                        window.location.href = `/verify_otp?email=${encodeURIComponent(email)}`;
                     }, 2000); 
                 } else {
                     messageDiv.className = 'message error';

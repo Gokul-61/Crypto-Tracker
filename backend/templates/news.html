@@ -234,7 +234,7 @@
   <script>
     const fetchCryptoNews = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/cryptos/news');
+        const response = await fetch('/api/cryptos/news');
         const data = await response.json();
         const articles = data.articles || [];
         renderNews(articles);
