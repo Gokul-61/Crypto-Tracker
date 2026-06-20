@@ -419,23 +419,28 @@ def logout():
 def get_cryptos():
     try:
         response = requests.get(
-            "https://api.coingecko.com/api/v3/coins/markets",
-            params={
-                "vs_currency": "usd",
-                "order": "market_cap_desc",
-                "per_page": 10,
-                "page": 1,
-                "sparkline": False
-            },
-            headers={
-                "User-Agent": "Mozilla/5.0"
-            },
-            timeout=10
+            "https://api.binance.com/api/v3/ticker/24hr"
         )
 
         response.raise_for_status()
 
-        return jsonify(response.json())
+        data = response.json()
+
+        cryptos = []
+
+        for coin in data:
+            if coin["symbol"].endswith("USDT"):
+                cryptos.append({
+                    "id": coin["symbol"],
+                    "name": coin["symbol"].replace("USDT", ""),
+                    "symbol": coin["symbol"].replace("USDT", ""),
+                    "current_price": float(coin["lastPrice"]),
+                    "price_change_percentage_24h": float(coin["priceChangePercent"]),
+                    "market_cap": 0,
+                    "image": ""
+                })
+
+        return jsonify(cryptos[:50])
 
     except Exception as e:
         return jsonify({
