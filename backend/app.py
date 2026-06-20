@@ -419,28 +419,38 @@ def logout():
 def get_cryptos():
     try:
         response = requests.get(
-            "https://api.binance.com/api/v3/ticker/24hr"
+            "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+            headers={
+                "X-CMC_PRO_API_KEY": os.getenv("CMC_API_KEY")
+            },
+            params={
+                "start": 1,
+                "limit": 50,
+                "convert": "USD"
+            }
         )
 
         response.raise_for_status()
 
-        data = response.json()
+        data = response.json()["data"]
 
         cryptos = []
 
         for coin in data:
-            if coin["symbol"].endswith("USDT"):
-                cryptos.append({
-                    "id": coin["symbol"],
-                    "name": coin["symbol"].replace("USDT", ""),
-                    "symbol": coin["symbol"].replace("USDT", ""),
-                    "current_price": float(coin["lastPrice"]),
-                    "price_change_percentage_24h": float(coin["priceChangePercent"]),
-                    "market_cap": 0,
-                    "image": ""
-                })
+            cryptos.append({
+                "id": coin["slug"],
+                "name": coin["name"],
+                "symbol": coin["symbol"],
+                "current_price": coin["quote"]["USD"]["price"],
+                "price_change_percentage_24h":
+                    coin["quote"]["USD"]["percent_change_24h"],
+                "market_cap":
+                    coin["quote"]["USD"]["market_cap"],
+                "image":
+                    f"https://s2.coinmarketcap.com/static/img/coins/64x64/{coin['id']}.png"
+            })
 
-        return jsonify(cryptos[:50])
+        return jsonify(cryptos)
 
     except Exception as e:
         return jsonify({
