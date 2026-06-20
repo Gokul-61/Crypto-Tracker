@@ -144,33 +144,67 @@
             text-decoration: underline;
         }
 
-        @media screen and (max-width:768px){
+       /* Mobile Responsive */
+@media screen and (max-width:768px){
 
-.container{
-width:95%;
-padding:10px;
-}
+    body{
+        padding:15px;
+        overflow-x:hidden;
+    }
 
-table{
-display:block;
-overflow-x:auto;
-}
+    .auth-container{
+        width:100%;
+        max-width:100%;
+        padding:1.8rem;
+        border-radius:10px;
+    }
 
-.nav-links span{
-display:none;
-}
+    .auth-container h2{
+        font-size:1.7rem;
+        margin-bottom:1rem;
+    }
 
-.nav-links{
-gap:8px;
-}
+    .instruction{
+        font-size:0.9rem;
+        margin-bottom:1.5rem;
+    }
 
-button{
-width:100%;
-}
+    .form-group{
+        margin-bottom:1.2rem;
+    }
 
-h1{
-font-size:1.5rem;
-}
+    .form-group label{
+        font-size:0.9rem;
+    }
+
+    .form-group input{
+        padding:0.9rem;
+        font-size:1rem;
+        text-align:center;
+        letter-spacing:2px;
+    }
+
+    .cta-button{
+        width:100%;
+        padding:0.9rem;
+        font-size:1rem;
+    }
+
+    .message{
+        font-size:0.9rem;
+    }
+
+    .auth-links{
+        display:flex;
+        flex-direction:column;
+        gap:0.8rem;
+        margin-top:1.5rem;
+    }
+
+    .auth-links a{
+        margin:0;
+        font-size:0.9rem;
+    }
 
 }
     </style>
