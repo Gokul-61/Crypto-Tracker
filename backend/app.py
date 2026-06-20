@@ -462,7 +462,18 @@ def get_coin_trends(coin_id):
     days = int(request.args.get('days', 7))
 
     try:
-        symbol = coin_id.upper() + "/USD"
+        # Map coin IDs to symbols
+        symbol_map = {
+            "bitcoin": "BTC/USD",
+            "ethereum": "ETH/USD",
+            "solana": "SOL/USD",
+            "bnb": "BNB/USD",
+            "xrp": "XRP/USD",
+            "tether": "USDT/USD",
+            "usd-coin": "USDC/USD"
+        }
+
+        symbol = symbol_map.get(coin_id, coin_id.upper() + "/USD")
 
         response = requests.get(
             "https://api.twelvedata.com/time_series",
@@ -477,6 +488,12 @@ def get_coin_trends(coin_id):
         response.raise_for_status()
 
         data = response.json()
+
+        if "values" not in data:
+            return jsonify({
+                "error": "Failed to fetch trends",
+                "details": data
+            }), 500
 
         prices = []
 
