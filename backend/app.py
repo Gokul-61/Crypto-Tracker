@@ -12,6 +12,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 import string
 from itsdangerous import URLSafeTimedSerializer
+from dotenv import load_dotenv
+load_dotenv()
 
 
 app = Flask(__name__)
